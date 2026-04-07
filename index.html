@@ -370,6 +370,163 @@
       letter-spacing: 2px;
       color: rgba(7,193,96,0.7);
     }
+
+    .tab-nav {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: -10px 0 18px;
+    }
+    .tab-btn {
+      border: 1px solid rgba(232,93,47,0.25);
+      background: rgba(30,18,8,0.65);
+      color: var(--cream);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .tab-btn:hover {
+      border-color: rgba(232,93,47,0.45);
+      transform: translateY(-1px);
+    }
+    .tab-btn.active {
+      border-color: rgba(243,156,18,0.65);
+      background: rgba(232,93,47,0.15);
+      color: #ffd28a;
+    }
+    .tab-pane { display: none; width: 100%; }
+    .tab-pane.active { display: block; }
+
+    .about-wrap {
+      width: 100%;
+      padding: 4px 2px 2px;
+    }
+    .about-hero {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(232,93,47,0.22);
+    }
+    .about-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .about-role {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(253,243,227,0.8);
+      margin-bottom: 12px;
+    }
+    .about-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .about-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 99px;
+      border: 1px solid rgba(232,93,47,0.28);
+      color: rgba(253,243,227,0.78);
+      background: rgba(232,93,47,0.08);
+    }
+    .about-sec-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,179,71,0.58);
+      margin-bottom: 12px;
+    }
+    .about-tl { display: flex; flex-direction: column; }
+    .about-item {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(232,93,47,0.16);
+    }
+    .about-item:last-child { border-bottom: none; }
+    .about-year {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(253,243,227,0.55);
+      padding-top: 2px;
+    }
+    .about-cn {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 2px;
+    }
+    .about-en {
+      font-size: 12px;
+      color: rgba(253,243,227,0.75);
+      margin-bottom: 6px;
+    }
+    .about-pill {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(232,93,47,0.25);
+      color: rgba(253,243,227,0.75);
+      background: rgba(232,93,47,0.08);
+    }
+    .about-pill.now {
+      border-color: rgba(255,179,71,0.62);
+      color: #ffd28a;
+      background: rgba(243,156,18,0.18);
+    }
+    .about-pill.edu {
+      border-color: rgba(7,193,96,0.38);
+      color: #90efc0;
+      background: rgba(7,193,96,0.14);
+    }
+    .about-contact {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(232,93,47,0.2);
+    }
+    .about-contact-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .about-contact-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(232,93,47,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(253,243,227,0.8);
+      flex-shrink: 0;
+    }
+    .about-contact-text {
+      font-size: 13px;
+      color: rgba(253,243,227,0.85);
+    }
+    .about-contact-text a {
+      color: #ffd28a;
+      text-decoration: none;
+    }
+    .about-contact-text a:hover { text-decoration: underline; }
+
+    @media (max-width: 420px) {
+      .about-item { grid-template-columns: 1fr; gap: 6px; }
+      .about-year { padding-top: 0; }
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -574,6 +731,124 @@
 
 
   <script>
+    function switchTab(tabName) {
+      const panes = document.querySelectorAll('.tab-pane');
+      const btns = document.querySelectorAll('.tab-btn');
+      panes.forEach((pane) => pane.classList.toggle('active', pane.dataset.tab === tabName));
+      btns.forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === tabName));
+    }
+
+    function setupTabs() {
+      const container = document.querySelector('.container');
+      const header = container ? container.querySelector('.header') : null;
+      if (!container || !header || container.querySelector('.tab-nav')) return;
+
+      const tabNav = document.createElement('div');
+      tabNav.className = 'tab-nav';
+      tabNav.innerHTML = `
+        <button class="tab-btn active" data-tab="home" type="button">Home</button>
+        <button class="tab-btn" data-tab="about" type="button">About</button>
+      `;
+
+      const panels = document.createElement('div');
+      const homePane = document.createElement('div');
+      homePane.className = 'tab-pane active';
+      homePane.dataset.tab = 'home';
+      const aboutPane = document.createElement('div');
+      aboutPane.className = 'tab-pane';
+      aboutPane.dataset.tab = 'about';
+
+      aboutPane.innerHTML = `
+        <div class="about-wrap">
+          <div class="about-hero">
+            <div class="about-name">关于作者 · About</div>
+            <div class="about-role">
+              AI 研究者 · 数据科学家 · 金融科技工程师<br>
+              AI Researcher · Data Scientist · Fintech Engineer
+            </div>
+            <div class="about-tags">
+              <span class="about-tag">AI Agent</span>
+              <span class="about-tag">Data Science</span>
+              <span class="about-tag">Fintech</span>
+              <span class="about-tag">NLP</span>
+              <span class="about-tag">Quantitative Finance</span>
+            </div>
+          </div>
+
+          <div class="about-sec-label">经历 · Experience</div>
+          <div class="about-tl">
+            <div class="about-item">
+              <div class="about-year">2017</div>
+              <div>
+                <div class="about-cn">百度数据引擎部</div>
+                <div class="about-en">Baidu · Data &amp; AI Division</div>
+                <span class="about-pill">Industry</span>
+              </div>
+            </div>
+
+            <div class="about-item">
+              <div class="about-year">2017 – 2021</div>
+              <div>
+                <div class="about-cn">数据科学与 AI 专业本硕</div>
+                <div class="about-en">B.S. &amp; M.S. · Data Science &amp; Artificial Intelligence</div>
+                <span class="about-pill edu">Education</span>
+              </div>
+            </div>
+
+            <div class="about-item">
+              <div class="about-year">2022 – 2023</div>
+              <div>
+                <div class="about-cn">北京大数据研究院</div>
+                <div class="about-en">Beijing Academy of Big Data · Research</div>
+                <span class="about-pill">Research</span>
+              </div>
+            </div>
+
+            <div class="about-item">
+              <div class="about-year">2024</div>
+              <div>
+                <div class="about-cn">新加坡金融资管公司研发</div>
+                <div class="about-en">Singapore · Financial Asset Management · R&amp;D</div>
+                <span class="about-pill">Industry</span>
+              </div>
+            </div>
+
+            <div class="about-item">
+              <div class="about-year">2025 – 至今<br>Present</div>
+              <div>
+                <div class="about-cn">旧金山金融科技公司 &amp; AI Agent 研发</div>
+                <div class="about-en">San Francisco · Fintech · AI Agent Development</div>
+                <span class="about-pill now">Current</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-contact">
+            <div class="about-sec-label" style="margin-bottom:10px;">联系 · Contact</div>
+            <div class="about-contact-row">
+              <div class="about-contact-icon">✉</div>
+              <div class="about-contact-text">
+                <a href="mailto:liuhongyang001@gmail.com">liuhongyang001@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const moveNodes = [];
+      for (const child of container.children) {
+        if (child !== header && child !== tabNav && child !== panels) moveNodes.push(child);
+      }
+      moveNodes.forEach((node) => homePane.appendChild(node));
+      panels.appendChild(homePane);
+      panels.appendChild(aboutPane);
+
+      header.after(tabNav, panels);
+      tabNav.querySelectorAll('.tab-btn').forEach((btn) => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+    }
+
     function toggleQR(e, id) {
       e.preventDefault();
       const all = ['xhsqr','wxqr','dyqr'];
@@ -586,6 +861,8 @@
         }
       });
     }
+
+    setupTabs();
   </script>
 </body>
 </html>
