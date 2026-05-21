@@ -1,9 +1,3 @@
 {
-  "buildCommand": "echo 'Static site'",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "node20.x",
-      "maxDuration": 10
-    }
-  }
+  "buildCommand": "echo 'Static HTML site'"
 }
