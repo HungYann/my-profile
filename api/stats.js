@@ -1,16 +1,14 @@
 /**
  * Vercel Serverless Function: Resume View Statistics
- * Direct connection to Upstash KV: carmine-yacht
+ * Direct connection to Vercel KV (Upstash backed)
  */
 
 import { Redis } from '@upstash/redis';
 
-// Initialize Redis client - automatically uses:
-// UPSTASH_KV_CARMINE_YACHT_REST_API_URL
-// UPSTASH_KV_CARMINE_YACHT_REST_API_TOKEN
+// Initialize Redis client using standard Vercel KV env vars
 const redis = new Redis({
-  url: process.env.UPSTASH_KV_CARMINE_YACHT_REST_API_URL,
-  token: process.env.UPSTASH_KV_CARMINE_YACHT_REST_API_TOKEN,
+  url: process.env.KV_REST_API_URL,
+  token: process.env.KV_REST_API_TOKEN,
 });
 
 const STATS_KEY = 'resume_stats';
