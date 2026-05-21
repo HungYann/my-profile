@@ -1,0 +1,9 @@
+{
+  "buildCommand": "echo 'Static site, no build needed'",
+  "framework": "html",
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "node20.x"
+    }
+  }
+}
